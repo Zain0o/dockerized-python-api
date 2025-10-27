@@ -45,3 +45,9 @@ You can use `curl` or any API client (like Postman) to interact with the API.
 curl -X POST http://localhost:5001/tasks \
      -H "Content-Type: application/json" \
      -d '{"description": "Showcase my Docker skills"}'
+
+# Dockerized Python To-Do API
+
+[![CI-CD Pipeline](https://github.com/Zain0o/dockerized-python-api/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Zain0o/dockerized-python-api/actions/workflows/main.yml)
+
+This project is a simple RESTful API for a To-Do list, built with Python and Flask...
