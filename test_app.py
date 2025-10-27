@@ -1,15 +1,14 @@
 import pytest
 from app import app as flask_app
 
+# The 'app' fixture now requests the 'monkeypatch' fixture as an argument.
 @pytest.fixture
-def app():
-    # --- The Magic Happens Here ---
-    # Use monkeypatch to fake the environment variables
-    # This prevents the app from trying to connect to a real database
-    pytest.monkeypatch.setenv("POSTGRES_USER", "testuser")
-    pytest.monkeypatch.setenv("POSTGRES_PASSWORD", "testpass")
-    pytest.monkeypatch.setenv("POSTGRES_HOST", "localhost")
-    pytest.monkeypatch.setenv("POSTGRES_DB", "testdb")
+def app(monkeypatch):
+    # Now we use the 'monkeypatch' object that pytest provided.
+    monkeypatch.setenv("POSTGRES_USER", "testuser")
+    monkeypatch.setenv("POSTGRES_PASSWORD", "testpass")
+    monkeypatch.setenv("POSTGRES_HOST", "localhost")
+    monkeypatch.setenv("POSTGRES_DB", "testdb")
 
     yield flask_app
 
@@ -17,17 +16,16 @@ def app():
 def client(app):
     return app.test_client()
 
-def test_get_tasks_returns_ok(client):
+# The test function itself also requests the 'monkeypatch' fixture.
+def test_get_tasks_returns_ok(client, monkeypatch):
     """
     GIVEN a Flask application configured for testing
     WHEN the '/tasks' page is requested (GET)
     THEN check that the response is valid (200 OK)
     """
-    # We will also mock the database call itself to avoid any connection
-    # This is a more robust way to unit test
-    with pytest.MonkeyPatch.context() as m:
-        # Pretend Task.query.all() returns an empty list
-        m.setattr("app.Task.query.all", lambda: [])
-        response = client.get('/tasks')
+    # We use the provided monkeypatch object to mock the database call.
+    # No 'with' statement is needed.
+    monkeypatch.setattr("app.Task.query.all", lambda: [])
+    response = client.get('/tasks')
 
     assert response.status_code == 200
