@@ -1,5 +1,7 @@
 # Dockerized Python To-Do API
 
+[![CI-CD Pipeline](https://github.com/Zain0o/dockerized-python-api/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Zain0o/dockerized-python-api/actions/workflows/main.yml)
+
 This project is a simple RESTful API for a To-Do list, built with Python and Flask. The entire application stack, including the PostgreSQL database, is fully containerized using Docker and orchestrated with Docker Compose.
 
 The primary goal of this project is to demonstrate foundational knowledge of containerization, multi-container networking, and data persistence in a real-world developer workflow.
@@ -12,6 +14,7 @@ The primary goal of this project is to demonstrate foundational knowledge of con
 *   **Data Persistence:** Using Docker Volumes to persist PostgreSQL data, ensuring that data is not lost when containers are stopped or removed.
 *   **Dependency Management:** Solving container startup order issues with Docker Compose `healthcheck` to ensure the application only starts after the database is fully ready.
 *   **Backend Development:** A simple REST API built with Python and Flask.
+*   **CI/CD:** Automated build, test, and push to Docker Hub using GitHub Actions.
 
 ## Prerequisites
 
@@ -21,7 +24,7 @@ The primary goal of this project is to demonstrate foundational knowledge of con
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/dockerized-python-api.git
+    git clone https://github.com/Zain0o/dockerized-python-api.git
     ```
 
 2.  **Navigate to the project directory:**
@@ -45,9 +48,3 @@ You can use `curl` or any API client (like Postman) to interact with the API.
 curl -X POST http://localhost:5001/tasks \
      -H "Content-Type: application/json" \
      -d '{"description": "Showcase my Docker skills"}'
-
-# Dockerized Python To-Do API
-
-[![CI-CD Pipeline](https://github.com/Zain0o/dockerized-python-api/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/Zain0o/dockerized-python-api/actions/workflows/main.yml)
-
-This project is a simple RESTful API for a To-Do list, built with Python and Flask...
