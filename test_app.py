@@ -1,38 +1,34 @@
-import pytest
-from app import app as flask_app, db as _db
+# test_app.py
 
-# This fixture sets up the application for all tests
+import pytest
+from app import create_app, db
+
 @pytest.fixture(scope='module')
 def app():
-    # Set up a test configuration
-    flask_app.config.update({
+    """Instance of Flask app for testing."""
+    # Create the app with a specific test configuration
+    app = create_app({
         "TESTING": True,
-        # Use an in-memory SQLite database for tests to be fast and isolated
-        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"
     })
 
-    # Create the database and the database table(s)
-    with flask_app.app_context():
-        _db.create_all()
+    # Set up the database context
+    with app.app_context():
+        db.create_all()
 
-    yield flask_app
+    yield app
 
-    # Tear down the database
-    with flask_app.app_context():
-        _db.drop_all()
+    # Clean up the database context
+    with app.app_context():
+        db.drop_all()
 
-# This fixture gives us a client to make requests to the app
 @pytest.fixture(scope='module')
 def client(app):
+    """A test client for the app."""
     return app.test_client()
 
-# The actual test function
 def test_get_tasks_returns_ok(client):
-    """
-    GIVEN a Flask application configured for testing
-    WHEN the '/tasks' page is requested (GET)
-    THEN check that the response is valid (200 OK)
-    """
+    """Test that the /tasks endpoint returns a 200 OK and an empty list."""
     response = client.get('/tasks')
     assert response.status_code == 200
-    assert response.json == [] # Check that it returns an empty list
+    assert response.json == []
